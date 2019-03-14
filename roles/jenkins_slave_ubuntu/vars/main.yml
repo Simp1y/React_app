@@ -1,0 +1,5 @@
+---
+# vars file for jenkins_slave_ubuntu
+#dest_dir: /var/lib/jenkins/.ssh/
+dest_dir: /var/lib/jenkins/.ssh/
+#dest_dir2: /home/jenkins/.ssh/

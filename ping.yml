@@ -1,0 +1,8 @@
+---
+- name: Test ping to my servers
+  hosts: all
+  become: yes
+  
+  tasks:
+  - name: ping DU servers
+    ping:

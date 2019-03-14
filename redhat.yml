@@ -1,0 +1,30 @@
+---
+- name: Install Engine-X and deploy react
+  hosts: all
+  become: yes
+
+  vars:
+     source_dir: /var/lib/jenkins/workspace/react_app_nginx/build/
+     dest_dir2: /usr/share/nginx/html
+
+
+  tasks:
+  - name: Check LINUX Version
+    debug: var=ansible_os_family
+  - name: Add epel-release repo
+    yum: name=epel-release state=present
+    when: ansible_os_family == "RedHat"
+
+  - block
+
+  - name: Install nginx web-server in RedHat
+    yum: name=nginx state=latest
+
+  - name: Copy React app to servers in RedHat
+    copy: src={{ source_dir }} dest={{ dest_dir2 }} mode=0777
+    notify: Restart nginx yum
+  - name: Start web servers and make it enabled on boot
+    service: name=nginx state=started enabled=yes
+
+    when: ansible_os_family == "RedHat"
+

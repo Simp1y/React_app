@@ -1,0 +1,9 @@
+[ubuntu]
+Slave2 ansible_host=68.183.221.111
+Slave1 ansible_host=68.183.75.51
+
+[centos]
+centOS-1 ansible_host=157.230.23.109
+centOS-2 ansible_host=104.248.19.161
+centOS-AMAZON ansible_host=3.121.195.201 
+

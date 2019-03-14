@@ -1,0 +1,82 @@
+---
+#
+#
+#
+#    cache_valid_time: 86400 
+- name: Update all packages Debian family
+  apt:
+    upgrade: dist
+  when: ansible_os_family == "Debian"
+
+- name: Run "apt-get update"
+  apt:
+    update_cache: yes
+  when: ansible_os_family == "Debian"
+
+- name: Update system Redhat family
+  yum: 
+    name: '*' 
+    state: latest
+  when: ansible_os_family == "RedHat"
+
+
+- name: Add Jenkins user and add it to sudo Debian
+  user:
+     name: jenkins
+     createhome: yes
+     home: /var/lib/jenkins/
+     shell: /bin/bash 
+     password: $1$passfora$vwY2GUeNEht1mAIM5S4q3/
+     groups: sudo 
+     append: yes 
+     state: present
+  become: yes
+  become_method: "sudo"
+  when: ansible_os_family == "Debian"
+
+- name: Add Jenkins user and add it to wheel RedHat
+  user:
+     name: jenkins
+     createhome: yes
+     home: /var/lib/jenkins/
+     shell: /bin/bash
+     password: $1$passfora$vwY2GUeNEht1mAIM5S4q3/
+     groups: wheel
+     state: present
+  become: yes
+  become_method: "sudo"
+  when: ansible_os_family == "RedHat"
+
+- name: Create direcroty for jenkins
+  file:
+    path: /var/lib/jenkins
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+
+- name: Install Java 8 version Debian family
+  apt: 
+    name: openjdk-8-jre
+    state: latest  
+  when: ansible_os_family == "Debian"
+
+- name: Install Java 8 version RedHat family
+  yum:
+    name: java-1.8.0-openjdk
+    state: latest
+  when: ansible_os_family == "RedHat"
+
+
+- name: Create direcroty /.ssh
+  file:
+    path: /var/lib/jenkins/.ssh
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: 0775
+
+- name: Copy file Authorized_keys to slave
+  copy: src={{ item }} dest={{ dest_dir }} owner=jenkins group=jenkins mode=0664
+  loop:
+     - "authorized_keys"

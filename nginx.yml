@@ -1,0 +1,11 @@
+---
+- name: Install Engine-X server
+  hosts: ubuntu
+  become: yes
+
+  tasks:
+  - name: Install Nginx
+    apt: name=nginx state=latest
+  
+  - name: Start Nginx and enable it on system boot
+    service: name=nginx state=started enabled=yes

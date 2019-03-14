@@ -1,0 +1,13 @@
+---
+- name: loops playbook
+  hosts: ubuntu
+  become: yes 
+
+  tasks:
+  - name: say hello
+    debug: msg="hello {{ item }}"
+    loop: 
+      - "vasya"
+      - "petta"
+      - "13564"
+

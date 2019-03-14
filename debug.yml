@@ -1,0 +1,7 @@
+---
+- name: Test debug
+  hosts: ubuntu
+  become: yes
+   
+  - debug:
+      var: ansible_distribution
